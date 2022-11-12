@@ -30,7 +30,7 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/about" class="nav-link">Imprint</router-link>
+              <router-link to="/imprint" class="nav-link">Imprint</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/help" class="nav-link">Help</router-link>
