@@ -13,12 +13,12 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">Fluchtachterl</a>
+        <a class="navbar-brand" href="#">
+          <router-link to="/" class="nav-link">Fluchtachterl</router-link>
+          </a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link to="/" class="nav-link active">Home</router-link>
-            </li>
+
             <li class="nav-item">
               <router-link to="/products" class="nav-link">
                 Products
@@ -99,4 +99,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+  #nav .active-link-nav {
+    color: #42b983;
+    border-bottom: 2px solid blue;
+  }
+
+</style>

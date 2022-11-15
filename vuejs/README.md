@@ -5,6 +5,12 @@
 npm install
 ```
 
+### Starts express server for mockdata
+```
+npm start
+```
+
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
