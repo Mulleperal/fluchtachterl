@@ -56,10 +56,16 @@
 import ErrorModal from "../components/organisms/ErrorModal.vue";
 import {ref} from "vue";
 import FaqAPI from "@/services/faqAPI";
+import { returnStatement } from "@babel/types";
 
 export default {
   components: {
     ErrorModal,
+  },
+  data() {
+    return {
+      showModal: false,
+    }
   },
   setup() {
     const data = ref('')
