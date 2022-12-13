@@ -155,6 +155,7 @@ export default {
         passwordCheck: "",
       },
     },
+
   }),
   methods: {
     async registerUser() {

@@ -62,7 +62,7 @@
             </li>
             -->
           </ul>
-          <div class="d-flex">
+          <div class="d-flex" v-if="!permission">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <router-link to="/login" class="nav-link">Login</router-link>
@@ -71,6 +71,19 @@
                 <router-link to="/register" class="nav-link">
                   Register
                 </router-link>
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-flex" v-if="permission">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <router-link to="/user" class="nav-link">User</router-link>
+              </li>
+              <li class="nav-item nav-link" @click="logoutUser">
+<!--                <router-link to="/" class="nav-link">-->
+                  Logout
+<!--                </router-link>-->
               </li>
             </ul>
           </div>
@@ -94,8 +107,34 @@
 </template>
 
 <script>
+import jwt_decode from "jwt-decode";
+
 export default {
   name: "bt5Navbar",
+  data() {
+    return {
+      permission: null
+    }
+  },
+  methods: {
+    logoutUser() {
+      localStorage.clear()
+      this.$forceUpdate()
+      this.$router.push('home')
+
+    }
+  },
+  created() {
+    // get the username from local storage
+    let tkn = localStorage.getItem('accessToken');
+    if (tkn) {
+      let decoded_token = jwt_decode(tkn)
+      // set the username data property
+      this.permission = decoded_token.permissions;
+    }
+
+  },
+
 };
 </script>
 
