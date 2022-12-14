@@ -1,6 +1,6 @@
 <template>
   <div class="container col-8 col-md-4 col-sm-6">
-    <h1 class="mt-3 bg-secondary text-white rounded p-1">Login</h1>
+    <h1 class="mt-3 bg-secondary text-white rounded p-1">Edit Profiledata</h1>
     <form @submit="updateUserData" method="post">
       <div class="row p-1">
         <label for="username">Your Username</label>

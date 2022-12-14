@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/register",
     name: "register",
-    component: () => import("../views/RegisterView.vue"),
+    component: () => import("../views/RegisterViewNoValidation.vue"),
   },
   {
     path: "/products",
@@ -41,6 +41,11 @@ const routes = [
     path: "/user",
     name: "user",
     component: () => import("../views/UserView.vue"),
+  },
+  {
+    path: "/usermoderation",
+    name: "usermoderation",
+    component: () => import("../views/UserModerationView"),
   },
 ];
 

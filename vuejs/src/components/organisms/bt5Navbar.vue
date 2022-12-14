@@ -35,6 +35,9 @@
             <li class="nav-item">
               <router-link to="/help" class="nav-link">Help</router-link>
             </li>
+            <li class="nav-item" v-if="permission == 'Admin'">
+              <router-link to="/usermoderation" class="nav-link">User Moderation</router-link>
+            </li>
             <!--
             <li class="nav-item dropdown">
               <a
@@ -133,9 +136,10 @@ export default {
       let decoded_token = jwt_decode(tkn)
       // set the username data property
       this.permission = decoded_token.permissions;
+      console.log(this.permission)
       // window.location.reload()
     } else {
-      this.$router.push({ path: '/auctions' })
+      this.$router.push({ path: '/' })
     }
 
   },
