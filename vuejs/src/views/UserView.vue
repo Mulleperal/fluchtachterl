@@ -37,7 +37,13 @@
         <button class="btn btn-primary" type="submit">Update</button>
       </div>
 
+
+
     </form>
+
+    <div class="row p-2">
+      <button class="btn btn-danger" type="button" @click="deleteAccount">Yeet the account!</button>
+    </div>
   </div>
 </template>
 
@@ -77,6 +83,21 @@ export default {
           //   navComp.$forceUpdate()
           // })
 
+    },
+    deleteAccount(event) {
+      event.preventDefault()
+      let answ = window.confirm('Delete data?')
+      if (answ) {
+        axios.delete(`http://127.0.0.1:8080/api/v1/user/${this.user_id}`)
+            .then( resp =>{
+                  localStorage.clear()
+                  alert('Account deleted')
+                  window.location.reload()
+            }
+
+            )
+
+      }
     }
   },
 
