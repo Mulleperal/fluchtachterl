@@ -26,7 +26,8 @@ export default {
 
     console.log(data.value)
     return {data}
-  }
+  },
+
 };
 </script>
 

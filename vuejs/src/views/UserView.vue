@@ -31,6 +31,8 @@
 
       </div>
 
+
+
       <div class="row p-2">
         <button class="btn btn-primary" type="submit">Update</button>
       </div>
@@ -53,7 +55,7 @@ export default {
       username: '',
       email: '',
       billing:'',
-      user_id: ''
+      user_id: '',
 
     }
   },
@@ -61,10 +63,11 @@ export default {
 
     updateUserData(event) {
       event.preventDefault()
-      axios.post(`http://127.0.0.1:8080/api/v1/user/${this.user_id}`, {
+      axios.put(`http://127.0.0.1:8080/api/v1/user/${this.user_id}`, {
         username: this.username,
         email: this.email,
         billing: this.billing
+
       })
           // .then((resp) => {
           //   localStorage.setItem('accessToken', resp.data.token)

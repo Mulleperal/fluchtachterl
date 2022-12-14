@@ -108,6 +108,8 @@
 
 <script>
 import jwt_decode from "jwt-decode";
+import {watch} from "vue";
+import { useRouter, useRoute } from 'vue-router'
 
 export default {
   name: "bt5Navbar",
@@ -119,8 +121,8 @@ export default {
   methods: {
     logoutUser() {
       localStorage.clear()
-      this.$forceUpdate()
-      this.$router.push('home')
+      // this.$forceUpdate()
+      window.location.reload()
 
     }
   },
@@ -131,9 +133,14 @@ export default {
       let decoded_token = jwt_decode(tkn)
       // set the username data property
       this.permission = decoded_token.permissions;
+      // window.location.reload()
+    } else {
+      this.$router.push({ path: '/auctions' })
     }
 
   },
+
+
 
 };
 </script>

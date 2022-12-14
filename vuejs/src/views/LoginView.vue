@@ -27,9 +27,7 @@
       <div class="row p-2">
         <button class="btn btn-primary" type="submit">Login</button>
       </div>
-      <div class="row p-2">
-        <button class="btn btn-primary" type="button" @click="showtkn">Test</button>
-      </div>
+
     </form>
   </div>
 </template>
@@ -69,10 +67,7 @@ export default {
     //       this.form.errors[field] = error.message;
     //     });
     // },
-    showtkn(event) {
-      event.preventDefault()
-      console.log(this.$store.getters.getToken())
-    },
+
     login(event) {
       event.preventDefault()
       console.log(this.form.values.username)
@@ -83,13 +78,18 @@ export default {
           .then((resp) => {
             localStorage.setItem('accessToken', resp.data.token)
             this.$store.commit('setToken', resp.data)
-            console.log(jwt_decode(resp.data.token))
-            let navComp = this.$refs.bt5Navbar
-            navComp.$forceUpdate()
+            this.$router.push({ path: '/auctions' })
           })
+          // .then(window.location.reload())
 
     }
   },
+
+
+  beforeUnmount() {
+    window.location.reload()
+  }
+
 };
 </script>
 
