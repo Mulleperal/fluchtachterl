@@ -42,7 +42,7 @@ export default {
 
     }
 
-    loadData()
+    // loadData()
 
     return {data}
   }

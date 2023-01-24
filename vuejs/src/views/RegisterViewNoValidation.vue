@@ -5,10 +5,10 @@
       <div class="row p-1">
         <label for="email">Your Emai-Address</label>
         <input
-          id="email"
-          type="email"
-          v-model="email"
-          @input="formCheck"
+            id="email"
+            type="email"
+            v-model="email"
+            @input="formCheck"
 
         />
 
@@ -16,10 +16,10 @@
       <div class="row p-1">
         <label for="username">Your Username</label>
         <input
-          id="username"
-          type="text"
-          v-model="username"
-          @input="formCheck"
+            id="username"
+            type="text"
+            v-model="username"
+            @input="formCheck"
 
         />
 
@@ -27,32 +27,33 @@
       <div class="row p-1">
         <label for="password">Your Password</label>
         <input
-          id="password"
-          type="password"
-          v-model="password"
-          @input="formCheck"
+            id="password"
+            type="password"
+            v-model="password"
+            @input="formCheck"
         />
 
       </div>
       <div class="row p-1">
         <label for="passwordCheck">Confirm your Password</label>
         <input
-          id="passwordCheck"
-          type="password"
-          v-model="passwordCheck"
-          @input="formCheck"
+            id="passwordCheck"
+            type="password"
+            v-model="passwordCheck"
+            @input="formCheck"
         />
 
 
         <p v-if="!passwordMatch">Passwords dont match</p>
 
       </div>
-      <p v-if="!validForm"> Register Button appears as soon as all field are filled and password is at least 8 char. long</p>
+      <p v-if="!validForm"> Register Button appears as soon as all field are filled and password is at least 8 char.
+        long</p>
       <div class="row p-2">
         <button
             v-if="validForm"
-          class="btn btn-primary"
-          type="submit"
+            class="btn btn-primary"
+            type="submit"
         >
           Register
         </button>
@@ -64,7 +65,8 @@
 <script>
 import axios from "axios";
 import * as yup from "yup";
-import { object } from "yup";
+import {object} from "yup";
+import {pb} from "@/services/api"
 
 export default {
   name: "RegisterViewNoValidation",
@@ -72,25 +74,42 @@ export default {
     return {
       username: '',
       email: '',
-      password:'',
+      password: '',
       passwordCheck: '',
       validForm: false,
-      passwordMatch: false
+      passwordMatch: false,
+      user_permission: 'USER'
     }
   },
 
   methods: {
-    registerUser(event) {
+    async registerUser(event) {
       event.preventDefault()
-      axios.post(`http://127.0.0.1:8080/api/v1/user/`, {
-        username: this.username,
-        email: this.email,
-        password: this.password
-      })
-          .then(resp => {
+      // axios.post(`http://127.0.0.1:8080/api/v1/user/`, {
+      //   username: this.username,
+      //   email: this.email,
+      //   password: this.password
+      // })
+      //     .then(resp => {
+      //       alert('Successfull Registration, please login')
+      //       this.$router.push({ path: '/auctions' })
+      //     })
+      const data = {
+        "username": this.username,
+        "password": this.password,
+        "passwordConfirm": this.password,
+        "user_permission": this.user_permission
+      }
+
+      const record = await pb.collection('users').create(data);
+      if (record) {
+        this.redirectNewUser()
+      }
+    },
+
+    redirectNewUser() {
             alert('Successfull Registration, please login')
             this.$router.push({ path: '/auctions' })
-          })
     },
 
     checkMatch() {

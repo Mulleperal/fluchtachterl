@@ -1,37 +1,40 @@
-<script>
+<script setup>
 import AuctionAPI from "@/services/auctionAPI";
-import {ref} from "vue";
+import PocketBase from "pocketbase";
 import moment from "moment"
+import {pb} from '@/services/api'
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
-export default {
+const auctions = ref({})
 
-  name: "ProductView",
 
-  components: {},
-
-  setup() {
-    const data = ref('')
-
-    const loadData = async () => {
-      try {
-        const resp = await AuctionAPI.getAuctions()
-        data.value = resp.data
-      } catch (err) {
-        alert(err)
-      }
-
+const getAuctionList = async () => {
+  try {
+    const data = await pb.collection('auction').getList(1, 50);;
+    if (data) {
+      auctions.value = data.items
     }
-
-    loadData()
-
-    console.log(data.value)
-    return {data}
-  },
-
+  } catch (error) {
+    console.log(error);
+  }
 };
+
+function clickList(row) {
+  console.log("clickList fired with " + row.id);
+  router.push({ name: 'auctionsdetail', params: { id: row.id } })
+}
+
+onMounted(() => {
+  getAuctionList();
+});
+
 </script>
 
 <template>
+
+
   <div class="container mt-3">
     <table class="table table-striped">
       <thead>
@@ -44,8 +47,8 @@ export default {
         <th scope="col">auction end</th>
       </tr>
       </thead>
-      <tbody>
-      <template v-for="item in data" :key="item.id">
+      <tbody v-on:click="clickList(item)" v-for="item in auctions" :key="item.id">
+<!--      <template >-->
         <tr>
           <td>{{ item.company }}</td>
           <td>{{ item.address }}</td>
@@ -54,7 +57,7 @@ export default {
           <td>{{ item.timeLeft }}</td>
           <td>{{ item.auctionEnd }}</td>
         </tr>
-      </template>
+<!--      </template>-->
       </tbody>
     </table>
   </div>
