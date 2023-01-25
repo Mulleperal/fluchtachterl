@@ -10,6 +10,7 @@ const router = useRouter()
 const auctions = ref({})
 const user_id = ref({})
 const create_auction = ref(false)
+const user_perm = ref('ANON')
 
 const address = ref({})
 const volume = ref({})
@@ -37,6 +38,7 @@ function get_UserPerms() {
   if (pb.authStore.model) {
     if (pb.authStore.model.user_permission) {
       user_id.value = pb.authStore.model.id
+      user_perm.value = pb.authStore.model.user_permission
       console.log(user_id.value)
       return true
     }
@@ -109,7 +111,7 @@ onMounted(() => {
 
     </h1>
 
-    <button type="button" v-if="get_UserPerms" @click="open_auction">
+    <button type="button" v-if="user_perm == 'ADMIN' || user_perm == 'USER'" @click="open_auction">
       Create Auction
     </button>
 
