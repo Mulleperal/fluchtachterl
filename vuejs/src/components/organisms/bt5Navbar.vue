@@ -36,11 +36,11 @@
             <li class="nav-item">
               <router-link to="/help" class="nav-link">Help</router-link>
             </li>
-            <div v-if="permission">
-              <li class="nav-item" v-if="is_admin">
+<!--            <div v-if="permission">-->
+              <li class="nav-item" v-if="permission == 'ADMIN'">
                 <router-link to="/usermoderation" class="nav-link">User Moderation</router-link>
               </li>
-            </div>
+<!--            </div>-->
             <!--
             <li class="nav-item dropdown">
               <a
