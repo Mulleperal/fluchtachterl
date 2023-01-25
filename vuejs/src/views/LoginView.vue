@@ -1,7 +1,7 @@
 <template>
   <div class="container col-8 col-md-4 col-sm-6">
     <h1 class="mt-3 bg-secondary text-white rounded p-1">Login</h1>
-    <form @submit="login" method="post">
+    <form @submit="check_user_login" method="post">
       <div class="row p-1">
         <label for="username">Your Username</label>
         <input
@@ -19,7 +19,7 @@
         />
       </div>
       <div class="row p-2">
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button class="btn btn-primary" type="submit" >Login</button>
       </div>
 
     </form>
@@ -46,9 +46,14 @@ export default {
   }),
   methods: {
 
-
-    async login(event) {
+    async check_user_login(event) {
       event.preventDefault()
+
+      this.login().then( this.$router.push({path: '/'}))
+
+    },
+
+    async login() {
       // console.log(this.form.values.username)
       // axios.post('http://127.0.0.1:8080/api/v1/user/login', {
       //   username: this.form.values.username,
@@ -63,6 +68,8 @@ export default {
           this.username, this.password,
       );
 
+      // const authData = await pb.admins.authWithPassword(, '1234567890');
+
             // localStorage.setItem('accessToken', resp.data.token)
             // this.$store.commit('setToken', resp.data)
             // this.$router.push({ path: '/auctions' })
@@ -73,17 +80,16 @@ export default {
           "Token=" + pb.authStore.token + ";" + expires + ";path=/";
 
       console.log(authData)
-      console.log(pb.authStore.isValid);
-      console.log(pb.authStore.token);
-      console.log(pb.authStore.model.id);
+      // console.log(pb.authStore.isValid);
+      // console.log(pb.authStore.token);
+      // console.log(pb.authStore.model.id);
+      console.log(pb.authStore.model.user_permission)
 
     }
   },
 
 
-  beforeUnmount() {
-    window.location.reload()
-  }
+
 
 };
 </script>

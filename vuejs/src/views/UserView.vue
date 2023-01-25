@@ -45,85 +45,92 @@
       <button class="btn btn-danger" type="button" @click="deleteAccount">Yeet the account!</button>
     </div>
   </div>
+
+  <hr>
+  <user-bids></user-bids>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import * as yup from "yup";
 import { object } from "yup";
 import jwt_decode from "jwt-decode";
+import {ref} from 'vue'
+import UserBids from "@/views/UserBids";
 
+const bids = ref({})
+const user_data = ref({})
 
-export default {
-  name: "UserView",
-  data() {
-    return {
-      username: '',
-      email: '',
-      billing:'',
-      user_id: '',
-
-    }
-  },
-  methods: {
-
-    updateUserData(event) {
-      event.preventDefault()
-      axios.put(`http://127.0.0.1:8080/api/v1/user/${this.user_id}`, {
-        username: this.username,
-        email: this.email,
-        billing: this.billing
-
-      })
-          // .then((resp) => {
-          //   localStorage.setItem('accessToken', resp.data.token)
-          //   this.$store.commit('setToken', resp.data)
-          //   console.log(jwt_decode(resp.data.token))
-          //   let navComp = this.$refs.bt5Navbar
-          //   navComp.$forceUpdate()
-          // })
-
-    },
-    deleteAccount(event) {
-      event.preventDefault()
-      let answ = window.confirm('Delete data?')
-      if (answ) {
-        axios.delete(`http://127.0.0.1:8080/api/v1/user/${this.user_id}`)
-            .then( resp =>{
-                  localStorage.clear()
-                  alert('Account deleted')
-                  window.location.reload()
-            }
-
-            )
-
-      }
-    }
-  },
-
-  created() {
-    let tkn = localStorage.getItem('accessToken');
-
-    if (tkn) {
-      let decoded_token = jwt_decode(tkn)
-      // set the username data property
-      this.user_id = decoded_token.user_id;
-
-      axios.get(`http://127.0.0.1:8080/api/v1/user/${decoded_token.user_id}`)
-          .then(resp => {
-            this.username = resp.data.username
-            this.email = resp.data.email
-            this.billing = resp.data.billing
-
-          })
-
-    }
-
-    console.log(this.user_id)
-
-
-  }
-};
+// export default {
+  // name: "UserView",
+  // data() {
+  //   return {
+  //     username: '',
+  //     email: '',
+  //     billing:'',
+  //     user_id: '',
+  //
+  //   }
+  // },
+  // methods: {
+  //
+  //   updateUserData(event) {
+  //     event.preventDefault()
+  //     axios.put(`http://127.0.0.1:8080/api/v1/user/${this.user_id}`, {
+  //       username: this.username,
+  //       email: this.email,
+  //       billing: this.billing
+  //
+  //     })
+  //         // .then((resp) => {
+  //         //   localStorage.setItem('accessToken', resp.data.token)
+  //         //   this.$store.commit('setToken', resp.data)
+  //         //   console.log(jwt_decode(resp.data.token))
+  //         //   let navComp = this.$refs.bt5Navbar
+  //         //   navComp.$forceUpdate()
+  //         // })
+  //
+  //   },
+  //   deleteAccount(event) {
+  //     event.preventDefault()
+  //     let answ = window.confirm('Delete data?')
+  //     if (answ) {
+  //       axios.delete(`http://127.0.0.1:8080/api/v1/user/${this.user_id}`)
+  //           .then( resp =>{
+  //                 localStorage.clear()
+  //                 alert('Account deleted')
+  //                 window.location.reload()
+  //           }
+  //
+  //           )
+  //
+  //     }
+  //   }
+  // },
+  //
+  // created() {
+  //   let tkn = localStorage.getItem('accessToken');
+  //
+  //   if (tkn) {
+  //     let decoded_token = jwt_decode(tkn)
+  //     // set the username data property
+  //     this.user_id = decoded_token.user_id;
+  //
+  //     axios.get(`http://127.0.0.1:8080/api/v1/user/${decoded_token.user_id}`)
+  //         .then(resp => {
+  //           this.username = resp.data.username
+  //           this.email = resp.data.email
+  //           this.billing = resp.data.billing
+  //
+  //         })
+  //
+  //   }
+  //
+  //   console.log(this.user_id)
+  //
+  //
+  // }
+// };
 </script>
 
 <style></style>

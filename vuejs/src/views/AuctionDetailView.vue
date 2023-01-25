@@ -2,17 +2,18 @@
 
   <div class="container">
     <div v-if="auction">
-      <h1>Auktion {{auction.name}} von {{auction.company}}</h1>
-      <h3>Endet am {{new Date(auction.end_time).toLocaleDateString()}} um {{new Date(auction.end_time).toLocaleTimeString()}}</h3>
-<!--      {{ id }}-->
+      <h1>Auktion {{ auction.name }} von {{ auction.company }}</h1>
+      <h3>Endet am {{ new Date(auction.end_time).toLocaleDateString() }} um
+        {{ new Date(auction.end_time).toLocaleTimeString() }}</h3>
+      <!--      {{ id }}-->
 
-<!--      {{ auction }}-->
+      <!--      {{ auction }}-->
 
       <hr>
 
       <h2>Produkte</h2>
 
-<!--      {{ // products }}-->
+      <!--      {{ // products }}-->
 
       <table class="table table-striped">
         <thead>
@@ -40,9 +41,11 @@
       <hr>
       <h3>Angebote</h3>
 
-      <div>
+      <div v-if="curr_user">
         <div v-if="new Date()<new Date(auction.end_time)">
-          <button type="button" class="btn btn-primary" v-if="curr_user != created_by && curr_user" @click="mitbieten">Mitbieten</button>
+          <button type="button" class="btn btn-primary" v-if="curr_user != created_by && curr_user" @click="mitbieten">
+            Mitbieten
+          </button>
 
         </div>
         <h2 v-else class="text-danger">Auktion zu Ende</h2>
@@ -86,14 +89,28 @@
         </div>
 
 
-        <button type="button" class="btn btn-primary" v-if="curr_user == created_by && !is_choosing && curr_user" @click="choose_offer">Angebot wahelen</button>
-        <button type="button" class="btn btn-danger" v-if="curr_user == created_by && is_choosing && curr_user" @click="stop_choosing">Stop</button>
+        <div v-if="curr_user == created_by && !is_choosing && curr_user">
+          <button type="button"
+                  class="btn btn-primary"
+                  v-if="new Date()>new Date(auction.end_time)"
+                  @click="choose_offer">Angebot wahelen
+          </button>
+          <h3
+              class="text-info"
+              v-if="new Date()<new Date(auction.end_time)"
+          >Bitte warten bis die Auktion zu Ende ist</h3>
+        </div>
+
+
+        <button type="button" class="btn btn-danger" v-if="curr_user == created_by && is_choosing && curr_user"
+                @click="stop_choosing">Stop
+        </button>
       </div>
 
       <table class="table table-striped">
         <thead>
         <tr>
-<!--          <th scope="col">User_Id</th>-->
+          <!--          <th scope="col">User_Id</th>-->
           <th scope="col">Description</th>
           <th scope="col">Delivery cond.</th>
           <th scope="col">Price amount</th>
@@ -101,26 +118,26 @@
         </tr>
         </thead>
         <tbody v-on:click="accept_offer(item, is_choosing)" v-for="item in bids" :key="item.id">
-<!--        <template   @click>-->
-          <tr>
-<!--            <td>{{ item.user_id }}</td>-->
-            <td>{{ item.conditions }}</td>
-            <td>{{ item.delivery_condition }}</td>
-            <td>{{ item.price }}</td>
-          </tr>
-<!--        </template>-->
+        <!--        <template   @click>-->
+        <tr :class="{is_mine: item.user_id == curr_user, is_winner: item.is_winner}">
+          <!--            <td>{{ item.user_id }}</td>-->
+          <td>{{ item.conditions }}</td>
+          <td>{{ item.delivery_condition }}</td>
+          <td>{{ item.price }}</td>
+        </tr>
+        <!--        </template>-->
         </tbody>
       </table>
     </div>
   </div>
 
-  <hr>
-  {{created_by}}
-  <hr>
-  {{curr_user}}
-  <hr>
-<!--  {{auction.id}}-->
-  {{mit_delivery}}
+<!--  <hr>-->
+<!--  {{ created_by }}-->
+<!--  <hr>-->
+<!--  {{ curr_user }}-->
+<!--  <hr>-->
+<!--  &lt;!&ndash;  {{auction.id}}&ndash;&gt;-->
+<!--  {{ mit_delivery }}-->
 
 </template>
 
@@ -131,7 +148,6 @@ import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import moment from 'moment'
 import jwt_decode from "jwt-decode";
-
 
 
 const router = useRouter()
@@ -157,10 +173,9 @@ function choose_offer() {
 }
 
 async function accept_offer(item, status) {
-  console.log('a')
-  console.log(status)
+
   if (status) {
-    await pb.collection('bid').update(item.id, {"is_winner":true})
+    await pb.collection('bid').update(item.id, {"is_winner": true})
 
   }
 
@@ -173,7 +188,7 @@ async function send_form() {
 
 }
 
-async function send_angebot(){
+async function send_angebot() {
   console.log(mit_delivery._rawValue.value)
   const data = {
     "conditions": mit_cond._rawValue.value,
@@ -184,6 +199,8 @@ async function send_angebot(){
   };
 
   const record = await pb.collection('bid').create(data);
+  console.log(record)
+  bids.value.push(record)
 
 
 }
@@ -234,8 +251,7 @@ const getAuctionData = async () => {
 
 function formatDate(dateString) {
   const date = new Date(dateString);
-  console.log(date)
-  console.log(typeof date)
+
   // Then specify how you want your dates to be formatted
   return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(date);
 }
@@ -249,5 +265,17 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+.is_mine {
+  background-color:lightblue;
+
+}
+
+.is_winner {
+  border-color:lime;
+  border-width: medium;
+
+}
+
 
 </style>
