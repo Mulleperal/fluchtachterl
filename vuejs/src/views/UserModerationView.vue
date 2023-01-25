@@ -34,10 +34,7 @@
       <tr :class="{is_banned: user.is_banned}">
         <td>{{ user.username }}</td>
         <td>{{ user.name }}</td>
-        <!--      <td>{{ user.volume }}</td>-->
-        <!--      <td>{{ user.lowestBid }}</td>-->
-        <!--      <td>{{ user.timeLeft }}</td>-->
-        <!--      <td>{{ user.auctionEnd }}</td>-->
+
       </tr>
       <!--      </template>-->
       </tbody>
@@ -57,11 +54,9 @@ const getUserList = async () => {
   try {
     const data = await pb.collection('users').getFullList(200)
     if (data) {
-      console.log(data)
       users.value = data
     }
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -80,17 +75,12 @@ function toggle_del_users() {
 
 
 async function toggle_ban_del_user(user, is_banning_bool, is_deleting_bool, index) {
-  console.log(is_banning_bool)
-  console.log(is_deleting_bool)
-  console.log(index)
-  // console.log()
-  //
+
   if (is_banning_bool == false && is_deleting_bool == true) {
     const data = {
       "is_banned": !user.is_banned
     };
 
-    console.log('BANNING USER', user.id)
 
     const record = await pb.collection('users').update(user.id, data);
     user.is_banned = !user.is_banned
@@ -98,7 +88,6 @@ async function toggle_ban_del_user(user, is_banning_bool, is_deleting_bool, inde
   }
 
   if (is_deleting_bool == false && is_banning_bool == true) {
-    console.log('DELETING USER', user.id)
     await pb.collection('users').delete(user.id);
     users.value.splice(index, 1)
     // return user
@@ -113,7 +102,6 @@ async function toggle_ban_del_user(user, is_banning_bool, is_deleting_bool, inde
 
 onMounted(() => {
   getUserList();
-  console.log(is_banning.value, is_deleting.value)
 });
 
 </script>

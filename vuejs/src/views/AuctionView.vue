@@ -20,7 +20,7 @@ const end_time = ref({})
 
 const getAuctionList = async () => {
   try {
-    const data = await pb.collection('auction').getList(1, 50);;
+    const data = await pb.collection('auction').getList(1, 50)
     if (data) {
       auctions.value = data.items
     }
@@ -74,11 +74,15 @@ function open_auction() {
 
 function get_time_diff(given_time) {
   var diff = new Date(given_time) - new Date();
+  console.log(given_time)
+  if (given_time == '') return 'No end'
+
   if (diff < 0) return 'Finished'// this is a time in milliseconds
   var diff_as_date = new Date(diff);
   let a=diff_as_date.getHours(); // hours
   let b=diff_as_date.getMinutes(); // minutes
   let c=diff_as_date.getSeconds(); // seconds
+
 
   return `${a}:${b}:${c}`
 }

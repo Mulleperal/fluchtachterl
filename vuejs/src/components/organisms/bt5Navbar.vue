@@ -37,7 +37,7 @@
               <router-link to="/help" class="nav-link">Help</router-link>
             </li>
             <div v-if="permission">
-              <li class="nav-item" v-if="permission == 'ADMIN'">
+              <li class="nav-item" v-if="is_admin">
                 <router-link to="/usermoderation" class="nav-link">User Moderation</router-link>
               </li>
             </div>
@@ -148,6 +148,10 @@ function logoutUser() {
   router.push({path: '/'})
 
 
+}
+
+function is_admin() {
+  return permission.value == 'ADMIN'
 }
 
 const fetchRoute = async () => {

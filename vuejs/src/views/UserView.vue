@@ -1,10 +1,7 @@
 
 
 <script setup>
-import axios from "axios";
-import * as yup from "yup";
-import { object } from "yup";
-import jwt_decode from "jwt-decode";
+
 import {onMounted, ref} from 'vue'
 import UserBids from "@/views/UserBids";
 import { useRouter } from 'vue-router';
@@ -16,7 +13,9 @@ const bids = ref({})
 const user_data = ref({})
 const username = ref({})
 const email = ref({})
+const temp_billing = ref({})
 const billing = ref({})
+const has_loaded = ref(false)
 
 
 
@@ -96,15 +95,16 @@ async function get_user_data() {
   username.value = record.username
   email.value = record.email
   billing.value = record.billing
+  console.log(record.username)
 }
 
 onMounted(() => {
-  get_user_data()
+  get_user_data().then(has_loaded.value=true)
 });
 </script>
 
 <template>
-  <div class="container col-8 col-md-4 col-sm-6">
+  <div class="container col-8 col-md-4 col-sm-6" v-if="has_loaded">
     <h1 class="mt-3 bg-secondary text-white rounded p-1">Edit Profiledata</h1>
     <form @submit="updateUserData" method="post">
       <div class="row p-1">
@@ -127,11 +127,11 @@ onMounted(() => {
       </div>
 
       <div class="row p-1">
-        <label for="email">Billingaddress</label>
+        <label for="billing">Billingaddress</label>
         <input
-            id="email"
+            id="billing"
             type="text"
-            v-model="billing.value"
+            v-model="temp_billing.value"
         />
 
       </div>
