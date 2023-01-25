@@ -12,7 +12,75 @@
       <hr>
 
       <h2>Produkte</h2>
+      <button type="button" v-if="created_by==curr_user" @click="show_product_creation">
+        Create Products
+      </button>
 
+      <div v-if="create_product">
+        <form @submit="create_product_function" method="post">
+          <div class="row p-1">
+            <label for="username">Productname</label>
+            <input
+                id="username"
+                type="text"
+                v-model="name.value"
+                required
+            />
+          </div>
+
+          <div class="row p-1">
+            <label for="comp">Alcoholic</label>
+            <input
+                id="comp"
+                type="checkbox"
+                v-model="alcoholic.value"
+
+            />
+          </div>
+
+
+
+          <div class="row p-1">
+            <label for="addres">Description</label>
+            <input
+                id="addres"
+                type="text"
+                v-model="description.value"
+                required
+            />
+          </div>
+
+          <div class="row p-1">
+            <label for="volume">Volume</label>
+            <input
+                id="volume"
+                type="text"
+                v-model="filling_amount.value"
+                required
+            />
+          </div>
+
+          <div class="row p-1">
+            <label for="end_time">Packaging</label>
+            <input
+                id="end_time"
+                type="text"
+                v-model="packaging.value"
+                required
+            />
+          </div>
+
+
+
+
+
+          <div class="row p-2">
+            <button class="btn btn-primary" type="submit" >Create</button>
+          </div>
+
+        </form>
+
+      </div>
       <!--      {{ // products }}-->
 
       <table class="table table-striped">
@@ -168,8 +236,41 @@ const mit_cond = ref({})
 const mit_delivery = ref({})
 const mit_price = ref({})
 
+const create_product = ref({})
+
+const name = ref({})
+const alcoholic = ref({})
+const description = ref({})
+const filling_amount = ref({})
+const packaging = ref({})
+
+
 function choose_offer() {
   is_choosing.value = true
+}
+
+async function create_product_function(event) {
+  event.preventDefault()
+
+  // console.log(address._rawValue.value)
+
+  const data = {
+    "name": name._rawValue.value,
+    "alcoholic": alcoholic._rawValue.value,
+    // "auction_end": end_time,
+    "description": description._rawValue.value,
+    "filling_amount": filling_amount._rawValue.value,
+    "packaging": packaging._rawValue.value,
+    "auction_id": id
+  };
+
+  const record = await pb.collection('product').create(data);
+  console.log(record)
+  products.value.push(record)
+}
+
+function show_product_creation() {
+  create_product.value = !create_product.value
 }
 
 async function accept_offer(item, status) {
@@ -259,6 +360,7 @@ function formatDate(dateString) {
 onMounted(() => {
   // const id = router.params.id
   getAuctionData();
+  create_product.value = false
 });
 
 
