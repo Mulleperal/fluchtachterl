@@ -68,6 +68,7 @@ export default {
           this.username, this.password,
       );
 
+
       // const authData = await pb.admins.authWithPassword(, '1234567890');
 
             // localStorage.setItem('accessToken', resp.data.token)
@@ -84,6 +85,8 @@ export default {
       // console.log(pb.authStore.token);
       // console.log(pb.authStore.model.id);
       console.log(pb.authStore.model.user_permission)
+      // this.$store.commit('setToken', pb.authStore.model.user_permission)
+
 
     }
   },

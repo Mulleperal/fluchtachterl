@@ -9,7 +9,7 @@ const router = useRouter()
 
 const auctions = ref({})
 const user_id = ref({})
-const create_auction = ref({})
+const create_auction = ref(false)
 
 const address = ref({})
 const volume = ref({})
@@ -25,12 +25,10 @@ const getAuctionList = async () => {
       auctions.value = data.items
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
 function clickList(row) {
-  console.log("clickList fired with " + row.id);
   router.push({ name: 'auctionsdetail', params: { id: row.id } })
 }
 
@@ -43,26 +41,22 @@ function get_UserPerms() {
       return true
     }
   }
-  console.log('fff')
   return false
 }
 
 async function create_auction_function(event) {
   event.preventDefault()
 
-  console.log(address._rawValue.value)
 
   const data = {
     "address": address._rawValue.value,
     "volume": volume._rawValue.value,
-    // "auction_end": end_time,
     "name": name._rawValue.value,
     "company": company._rawValue.value,
     "end_time": new Date(end_time._rawValue.value),
     "created_by": user_id.value
   };
 
-  console.log(data)
 
 
 
@@ -71,12 +65,10 @@ async function create_auction_function(event) {
 
 
   const record = await pb.collection('auction').create(data);
-  // console.log(record)
   router.push({ name: '/auctionsdetail', params: { id: record.id } })
 }
 
 function open_auction() {
-  console.log(create_auction.value)
   create_auction.value = !create_auction.value
 }
 

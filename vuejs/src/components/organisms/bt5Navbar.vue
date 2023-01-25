@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
@@ -122,7 +123,7 @@ import {useRouter, useRoute} from 'vue-router'
 import {onMounted, ref, watch} from 'vue';
 import { getCurrentInstance } from 'vue';
 
-const permission = ref({})
+const permission = ref('ANON')
 const user_id = ref({})
 
 const router = useRouter()
@@ -144,6 +145,7 @@ function logoutUser() {
   localStorage.clear()
   permission.value = ''
   pb.authStore.clear()
+  router.push({path: '/'})
 
 
 }
@@ -165,6 +167,7 @@ function get_UserPerms() {
       permission.value = pb.authStore.model.user_permission
       user_id.value = pb.authStore.model.id
       console.log(permission.value)
+      return pb.authStore.model.user_permission
     }
   }
 }
@@ -211,6 +214,7 @@ onMounted(() => {
   // const id = router.params.id
    get_UserPerms();
   fetchRoute()
+
 });
 
 watch(() => route.name, fetchRoute)

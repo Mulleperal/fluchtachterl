@@ -1,65 +1,24 @@
-<template>
-  <div class="container col-8 col-md-4 col-sm-6">
-    <h1 class="mt-3 bg-secondary text-white rounded p-1">Edit Profiledata</h1>
-    <form @submit="updateUserData" method="post">
-      <div class="row p-1">
-        <label for="username">Your Username</label>
-        <input
-          id="username"
-          type="text"
-          v-model="username"
-        />
 
-      </div>
-      <div class="row p-1">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="text"
-          v-model="email"
-        />
-
-      </div>
-
-      <div class="row p-1">
-        <label for="email">Billingaddress</label>
-        <input
-            id="email"
-            type="text"
-            v-model="billing"
-        />
-
-      </div>
-
-
-
-      <div class="row p-2">
-        <button class="btn btn-primary" type="submit">Update</button>
-      </div>
-
-
-
-    </form>
-
-    <div class="row p-2">
-      <button class="btn btn-danger" type="button" @click="deleteAccount">Yeet the account!</button>
-    </div>
-  </div>
-
-  <hr>
-  <user-bids></user-bids>
-</template>
 
 <script setup>
 import axios from "axios";
 import * as yup from "yup";
 import { object } from "yup";
 import jwt_decode from "jwt-decode";
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import UserBids from "@/views/UserBids";
+import { useRouter } from 'vue-router';
+import {pb} from '@/services/api'
+const router = useRouter()
+const id = router.currentRoute.value.params.id
 
 const bids = ref({})
 const user_data = ref({})
+const username = ref({})
+const email = ref({})
+const billing = ref({})
+
+
 
 // export default {
   // name: "UserView",
@@ -131,6 +90,69 @@ const user_data = ref({})
   //
   // }
 // };
+async function get_user_data() {
+
+  const record = await pb.collection('users').getOne(id);
+  username.value = record.username
+  email.value = record.email
+  billing.value = record.billing
+}
+
+onMounted(() => {
+  get_user_data()
+});
 </script>
+
+<template>
+  <div class="container col-8 col-md-4 col-sm-6">
+    <h1 class="mt-3 bg-secondary text-white rounded p-1">Edit Profiledata</h1>
+    <form @submit="updateUserData" method="post">
+      <div class="row p-1">
+        <label for="username">Your Username</label>
+        <input
+            id="username"
+            type="text"
+            v-model="username.value"
+        />
+
+      </div>
+      <div class="row p-1">
+        <label for="email">Email</label>
+        <input
+            id="email"
+            type="text"
+            v-model="email.value"
+        />
+
+      </div>
+
+      <div class="row p-1">
+        <label for="email">Billingaddress</label>
+        <input
+            id="email"
+            type="text"
+            v-model="billing.value"
+        />
+
+      </div>
+
+
+
+      <div class="row p-2">
+        <button class="btn btn-primary" type="submit">Update</button>
+      </div>
+
+
+
+    </form>
+
+    <div class="row p-2">
+      <button class="btn btn-danger" type="button" @click="deleteAccount">Yeet the account!</button>
+    </div>
+  </div>
+
+  <hr>
+  <user-bids></user-bids>
+</template>
 
 <style></style>

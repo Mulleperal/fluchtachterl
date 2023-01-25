@@ -9,6 +9,7 @@
             type="email"
             v-model="email"
             @input="formCheck"
+            autocomplete="off"
 
         />
 
